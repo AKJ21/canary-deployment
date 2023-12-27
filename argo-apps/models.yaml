@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: model-deployments
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mittal1989/Session23--Canary-Deployment
+    targetRevision: HEAD
+    path: model-deployments
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

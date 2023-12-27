@@ -1,0 +1,28 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+iam:
+  withOIDC: true
+
+metadata:
+  name: basic-cluster
+  region: ap-south-1
+  version: "1.27"
+
+managedNodeGroups:
+  - name: ng-dedicated-1
+    instanceType: t3a.xlarge
+    desiredCapacity: 4
+    spot: true
+    labels:
+      role: spot
+    ssh:
+      allow: true # will use ~/.ssh/id_rsa.pub as the default ssh key
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+        awsLoadBalancerController: true
+        certManager: true
+        externalDNS: true
+        ebs: true
+        

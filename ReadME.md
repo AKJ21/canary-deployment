@@ -1,3 +1,41 @@
+# Canary Deployment, Monitoring & ArgoCD
+
+- Canary rollouts in Kubernetes are supported by KServe for inference services.
+- Enables deploying a new version of an InferenceService to receive a percentage of traffic.
+
+![Python](https://img.shields.io/badge/python-3.9-blue)
+![torch](https://img.shields.io/badge/torch-1.12.0-orange)
+![transformers](https://img.shields.io/badge/transformers-4.30.2-orange)
+![pillow](https://img.shields.io/badge/pillow-9.5.0-orange)
+![fastapi[all]](https://img.shields.io/badge/fastapi[all]-0.98.0-green)
+
+
+## Objective 
+
+- Deploy any 3 models (has to be imagenet classifiers) from huggingface
+Create a Repository with all the code, and deployment files, and argo app yaml files
+- Use ArgoCD to connect your repo for automated deployment
+You will perform the below deployment step and run [send.py](<http://send.py>) to add load to the model
+- Perform Deployment Steps
+- 1st model with 1 replica
+- 2nd model with 30% traffic (canary candidate)
+- 2nd model with 100% traffic (promoted to production)
+- 2nd model with 2 replicas
+- 3rd model with 30% traffic (canary candidate)
+- 3rd model with 100% traffic
+- During the deployments, make sure to use Grafana to see Traffic Metrics
+Take screenshots during Canary Deployment of each step in deployment Service Latency Service Request Volume Response Time by Revision
+
+## Inference Model 
+
+Following image classifications models have been downloaded from hugging face
+
+1. https://huggingface.co/apple/mobilevitv2-1.0-imagenet1k-256
+2. https://huggingface.co/nateraw/food
+3. https://huggingface.co/dima806/67_cat_breeds_image_detection
+
+Create a t3a.2xlarge instance with Ubuntu Base Image
+
 ## Create the Cluster
 ```
 eksctl create cluster -f eks-config.yaml
@@ -138,6 +176,8 @@ Send multiple requests to model:
 ```
 for i in {1..200}; do python3 send.py ; done
 ```
+![Screenshot](Images/canary_deply.JPG)
+![Screenshot](Images/Grafana_1st_Deployment.JPG)
 
 ## Second model deployment as v2 of first model
 Copy imagenet-vit and cat-classifier model deployment files from s3 to local:
@@ -193,7 +233,15 @@ Load the model
 ```
 python send.py
 ```
+![Screenshot](Images/canary_deply2.JPG)
+![Screenshot](Images/Grafana_2nd_Deployment.JPG)
+![Screenshot](Images/Grafana_2nd_Deployment_100pct.JPG)
 
 To increase/descrease the traffic to newer version, just change percentage against canaryTrafficPercent in classifier yaml file and apply.
 Finally, we can promote our new model by just removing canaryTrafficPercent.
 
+## Third model deployment as v3 of second model
+
+![Screenshot](Images/canary_deply3.JPG)
+![Screenshot](Images/Grafana_3nd_Deployment.JPG)
+![Screenshot](Images/Grafana_3nd_Deployment_100pct.JPG)

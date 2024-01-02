@@ -9,8 +9,8 @@ metadata:
      serving.kserve.io/s3-useanoncredential: "false" # omitting this is the same as false, if true will ignore provided credential and use anonymous credentials
 type: Opaque
 stringData: # use `stringData` for raw credential string or `data` for base64 encoded string
-  AWS_ACCESS_KEY_ID: "AKIA2VWS7UCAZLC4XH6P"
-  AWS_SECRET_ACCESS_KEY: "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"
+  AWS_ACCESS_KEY_ID: "AKIA2XXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  AWS_SECRET_ACCESS_KEY: "u8v5weuOEeCQXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 ---
 

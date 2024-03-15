@@ -157,7 +157,6 @@ Fetch the admin user’s password from secrets:
 ```
 kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
-### XGWTAwmR4lVJ9Oc8dEL1TpANgmSMrsLTOxUDJPJ0
 
 Port forward Grafana:
 ```
